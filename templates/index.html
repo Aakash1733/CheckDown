@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Website Status Checker</title>
+  <style>
+    /* CSS styling for the main page */
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f7f7f7;
+    }
+    
+    .container {
+      margin-top: 100px;
+    }
+    
+    h1 {
+      font-size: 28px;
+      color: #333;
+    }
+    
+    .input-bar {
+      width: 400px;
+      height: 40px;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      outline: none;
+    }
+    
+    .btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      color: #fff;
+      background-color: #007bff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    
+    .btn:hover {
+      background-color: #0056b3;
+    }
+    
+    .result {
+      margin-top: 50px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Website Status Checker</h1>
+    <input type="text" id="websiteUrl" class="input-bar" placeholder="Enter website URL">
+    <br>
+    <button id="checkBtn" class="btn">Check</button>
+    <button id="reportBtn" class="btn">Report</button>
+    <br>
+    <br>
+    <form action="/download" method="GET">
+      <button type="submit">Download Complete History</button>
+  </form>
+    <div id="result" class="result"></div>
+  </div>
+
+  <script>
+    // JavaScript code for handling button clicks and making requests to the backend
+    document.getElementById("checkBtn").addEventListener("click", function() {
+      var url = document.getElementById("websiteUrl").value;
+      if (url.trim() !== "") {
+        // Send a request to the backend to check the website status
+        fetch("/check?url=" + encodeURIComponent(url))
+          .then(function(response) {
+            return response.json();
+          })
+          .then(function(data) {
+            document.getElementById("result").innerHTML = data.message;
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      }
+    });
+
+    document.getElementById("reportBtn").addEventListener("click", function() {
+      var url = document.getElementById("websiteUrl").value;
+      if (url.trim() !== "") {
+        // Send a request to the backend to report the website status
+        fetch("/report?url=" + encodeURIComponent(url))
+          .then(function(response) {
+            return response.json();
+          })
+          .then(function(data) {
+            document.getElementById("result").innerHTML = data.message;
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      }
+    });
+  </script>
+</body>
+</html>
